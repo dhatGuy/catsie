@@ -13,14 +13,11 @@ const useGetFaves = () => {
     } catch (e) {
       // saving error
       console.log(e);
+      throw e;
     }
   };
 
-  return useQuery("faves", getFaves, {
-    onSuccess: (data) => {
-      // console.log(data.map((cat) => cat.name));
-    },
-  });
+  return useQuery("faves", getFaves);
 };
 
 export default useGetFaves;

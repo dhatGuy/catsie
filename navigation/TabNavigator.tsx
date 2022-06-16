@@ -26,11 +26,13 @@ const BottomTabBar = ({ navigation, state }) => {
     >
       <BottomNavigationTab
         title="All Cats"
-        icon={(props) => <Icon {...props} name="email-outline" />}
+        icon={(props) => <Icon {...props} name="cat" pack="assets" />}
       />
       <BottomNavigationTab
         title="Cats I Like"
-        icon={(props) => <Icon {...props} name="heart" />}
+        icon={(props) => (
+          <Icon height={30} width={30} {...props} name="heart" />
+        )}
       />
     </BottomNavigation>
   );

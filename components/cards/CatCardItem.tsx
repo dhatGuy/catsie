@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: 5,
+    paddingVertical: 10,
     paddingHorizontal: 15,
   },
   image: {
@@ -66,8 +66,5 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginRight: 20,
     resizeMode: "contain",
-  },
-  icon: {
-    // alignSelf: "flex-end",
   },
 });

@@ -43,7 +43,6 @@ const CatList = () => {
 
   return (
     <List
-      style={styles.container}
       keyExtractor={(item) => item.id}
       data={data?.pages.map((page) => page.data).flat()}
       renderItem={({ item }) => <CatCardItem item={item} />}
@@ -56,13 +55,15 @@ const CatList = () => {
       maxToRenderPerBatch={8}
       windowSize={11}
       initialNumToRender={8}
+      contentContainerStyle={styles.container}
     />
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    paddingVertical: 10,
+    backgroundColor: "#fff",
   },
   footer: {
     justifyContent: "center",

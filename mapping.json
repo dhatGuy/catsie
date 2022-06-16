@@ -1,0 +1,18 @@
+{
+  "components": {
+    "BottomNavigationTab": {
+      "appearances": {
+        "default": {
+          "mapping": {
+            "state": {
+              "selected": {
+                "textColor": "#212227",
+                "iconTintColor": "#212227"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
