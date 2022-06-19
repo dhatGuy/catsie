@@ -5,7 +5,7 @@ import { EvaIconsPack } from "@ui-kitten/eva-icons";
 import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { AssetIconsPack } from "./Icon";
-import mapping from "./mapping.json";
+import { default as mapping } from "./mapping.json";
 import TabNavigator from "./navigation/TabNavigator";
 
 export default function App() {

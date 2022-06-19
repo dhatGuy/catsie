@@ -1,6 +1,13 @@
 {
   "components": {
     "BottomNavigationTab": {
+      "meta": {
+        "scope": "mobile",
+        "parameters": {},
+        "variantGroups": {},
+        "states": {},
+        "appearances": {}
+      },
       "appearances": {
         "default": {
           "mapping": {

@@ -1,4 +1,4 @@
-import Config from "react-native-config";
+import Constants from "expo-constants";
 import { useInfiniteQuery } from "react-query";
 
 export default function useGetCats() {
@@ -8,7 +8,7 @@ export default function useGetCats() {
         `https://api.thecatapi.com/v1/breeds?limit=10&page=${pageParam}`,
         {
           headers: {
-            "x-api-key": Config.API_KEY,
+            "x-api-key": Constants.manifest?.extra?.API_KEY,
           },
         }
       )
