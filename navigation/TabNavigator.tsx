@@ -5,7 +5,7 @@ import {
   Icon,
 } from "@ui-kitten/components";
 import React from "react";
-import Favorites from "../screens/Favorites";
+import Favourites from "../screens/Favourites";
 import Home from "../screens/Home";
 import { BottomTabNavigatorParamList } from "./types";
 
@@ -41,7 +41,7 @@ const BottomTabBar = ({ navigation, state }) => {
 const TabNavigator = () => (
   <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
     <Screen name="All Cats" component={Home} />
-    <Screen name="Cats I Like" component={Favorites} />
+    <Screen name="Cats I Like" component={Favourites} />
   </Navigator>
 );
 

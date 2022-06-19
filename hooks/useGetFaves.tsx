@@ -10,6 +10,7 @@ const useGetFaves = () => {
       if (fave != null) {
         return JSON.parse(fave);
       }
+      return [];
     } catch (e) {
       // saving error
       console.log(e);
