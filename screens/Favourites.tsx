@@ -10,6 +10,7 @@ const Favourites = () => {
   if (isLoading)
     return (
       <Layout
+        accessibilityLabel="loading-spinner"
         style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
       >
         <Spinner status={"info"} size="giant" />

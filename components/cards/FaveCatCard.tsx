@@ -28,7 +28,10 @@ const FaveCatCard = ({ cat }) => {
       >
         <Text category={"s1"}>{cat.name}</Text>
 
-        <Pressable onPress={toggleFave}>
+        <Pressable
+          onPress={toggleFave}
+          accessibilityLabel="remove from favourites"
+        >
           <Icon width={20} height={20} fill="#DE0202" name="heart" />
         </Pressable>
       </Layout>

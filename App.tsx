@@ -2,6 +2,7 @@ import * as eva from "@eva-design/eva";
 import { NavigationContainer } from "@react-navigation/native";
 import { ApplicationProvider, IconRegistry } from "@ui-kitten/components";
 import { EvaIconsPack } from "@ui-kitten/eva-icons";
+import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { AssetIconsPack } from "./Icon";
@@ -15,6 +16,7 @@ export default function App() {
       <IconRegistry icons={[EvaIconsPack, AssetIconsPack]} />
       <ApplicationProvider {...eva} customMapping={mapping} theme={eva.light}>
         <NavigationContainer>
+          <StatusBar style="dark" />
           <TabNavigator />
         </NavigationContainer>
       </ApplicationProvider>

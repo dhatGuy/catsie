@@ -4,16 +4,14 @@ import { Image, Pressable, StyleSheet } from "react-native";
 import useGetFaves from "../../hooks/useGetFaves";
 import useToggleFave from "../../hooks/useToggleFave";
 
-function CatCardItem({ item }) {
+function CatCardItem({ item, index }) {
   const toggleFaveMutation = useToggleFave();
   const { data } = useGetFaves();
   const [isFave, setIsFave] = React.useState(false);
 
   React.useEffect(() => {
-    if (data) {
-      const isFave = data.some((cat) => cat.id === item.id);
-      setIsFave(isFave);
-    }
+    const isFave = data?.some((cat) => cat.id === item.id);
+    setIsFave(isFave);
   }, [data, item.id]);
 
   const toggleFave = () => {
@@ -27,22 +25,26 @@ function CatCardItem({ item }) {
   };
 
   return (
-    <Layout style={styles.container}>
+    <Layout style={styles.container} testID={`cat-row-${index}`}>
       <Layout style={{ flexDirection: "row", alignItems: "center" }}>
         <Image
           style={styles.image}
           source={{
             uri: item?.image?.url || "https://placekitten.com/200/200",
           }}
+          accessibilityLabel={`${item?.name}-image`}
         />
         <Text category={"s1"}>{item.name}</Text>
       </Layout>
       {isFave ? (
-        <Pressable onPress={toggleFave}>
+        <Pressable
+          onPress={toggleFave}
+          accessibilityLabel="remove from favourites"
+        >
           <Icon width={20} height={20} fill="#DE0202" name="heart" />
         </Pressable>
       ) : (
-        <Pressable onPress={toggleFave}>
+        <Pressable onPress={toggleFave} accessibilityLabel="add to favourites">
           <Icon width={20} height={20} fill="#272123" name="heart-outline" />
         </Pressable>
       )}

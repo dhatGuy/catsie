@@ -14,6 +14,8 @@ const CatList = () => {
     hasNextPage,
   } = useGetCats();
 
+  const loadMore = () => fetchNextPage();
+
   if (isLoading) {
     return (
       <Layout
@@ -22,6 +24,7 @@ const CatList = () => {
           justifyContent: "center",
           alignItems: "center",
         }}
+        accessibilityLabel="loading-spinner"
       >
         <Spinner size={"giant"} />
       </Layout>
@@ -39,13 +42,15 @@ const CatList = () => {
       </Layout>
     );
 
-  const loadMore = () => fetchNextPage();
+  const renderItem = ({ item, index }) => (
+    <CatCardItem index={index} item={item} />
+  );
 
   return (
     <List
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => item?.id}
       data={data?.pages.map((page) => page.data).flat()}
-      renderItem={({ item }) => <CatCardItem item={item} />}
+      renderItem={renderItem}
       ListFooterComponent={Footer}
       onEndReached={loadMore}
       onEndReachedThreshold={0.5}
