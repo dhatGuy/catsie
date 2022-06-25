@@ -1,4 +1,5 @@
-import { fireEvent, render } from "@testing-library/react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage/jest/async-storage-mock";
+import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import React from "react";
 import FaveCatCard from "../../components/cards/FaveCatCard";
 import TestWrapper, { UiKittenTestWrapper } from "../../utils/TestWrapper";
@@ -14,19 +15,14 @@ describe("Fave Cat Card Component", () => {
     };
     const { getByText } = render(
       <TestWrapper>
-        <FaveCatCard cat={cat} />
+        <FaveCatCard index={0} cat={cat} />
       </TestWrapper>
     );
-    expect(getByText(cat.name)).toBeDefined();
+
+    expect(getByText(cat.name));
   });
 
   it("should call the toggle function", async () => {
-    const mockedMutate = jest.fn();
-
-    jest.mock("../../hooks/useToggleFave.tsx", () => ({
-      useToggleFave: () => ({ mutate: mockedMutate }),
-    }));
-
     const cat = {
       id: 1,
       name: "ginger cat",
@@ -35,14 +31,21 @@ describe("Fave Cat Card Component", () => {
       },
     };
 
-    const { getByLabelText, debug } = render(
+    const { getByLabelText } = render(
       <UiKittenTestWrapper>
-        <FaveCatCard cat={cat} />
+        <FaveCatCard index={0} cat={cat} />
       </UiKittenTestWrapper>
     );
 
     fireEvent.press(getByLabelText(/remove/i));
 
-    expect(mockedMutate).toHaveBeenCalledTimes(1);
+    await waitFor(() => expect(AsyncStorage.getItem).toHaveBeenCalled());
+
+    expect(AsyncStorage.getItem).toHaveBeenCalledWith("fave");
+
+    expect(AsyncStorage.setItem).toHaveBeenCalledWith(
+      "fave",
+      JSON.stringify([cat])
+    );
   });
 });

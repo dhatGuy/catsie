@@ -28,7 +28,7 @@ const Favourites = () => {
         flexGrow: 1,
       }}
       data={data}
-      renderItem={({ item }) => <FaveCatCard cat={item} />}
+      renderItem={({ item, index }) => <FaveCatCard index={index} cat={item} />}
       numColumns={2}
       columnWrapperStyle={{
         paddingBottom: 15,

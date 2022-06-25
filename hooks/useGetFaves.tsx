@@ -12,8 +12,6 @@ const useGetFaves = () => {
       }
       return [];
     } catch (e) {
-      // saving error
-      console.log(e);
       throw e;
     }
   };

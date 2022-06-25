@@ -14,7 +14,7 @@ describe("Cat Card Component", () => {
     };
     const { getByText } = render(
       <TestWrapper>
-        <CatCardItem item={item} />
+        <CatCardItem item={item} index={0} />
       </TestWrapper>
     );
     expect(getByText(item.name)).toBeDefined();
@@ -28,7 +28,7 @@ describe("Cat Card Component", () => {
     };
     const { getByText, getByLabelText } = render(
       <TestWrapper>
-        <CatCardItem item={item} />
+        <CatCardItem index={0} item={item} />
       </TestWrapper>
     );
     expect(getByText(item.name)).toBeDefined();
@@ -45,7 +45,7 @@ describe("Cat Card Component", () => {
     };
     const { getByLabelText } = render(
       <TestWrapper>
-        <CatCardItem item={item} />
+        <CatCardItem index={0} item={item} />
       </TestWrapper>
     );
 

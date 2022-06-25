@@ -3,7 +3,7 @@ import React from "react";
 import { Image, Pressable, StyleSheet } from "react-native";
 import useToggleFave from "../../hooks/useToggleFave";
 
-const FaveCatCard = ({ cat }) => {
+const FaveCatCard = ({ cat, index }) => {
   const toggleFaveMutation = useToggleFave();
 
   const toggleFave = () => {
@@ -11,7 +11,7 @@ const FaveCatCard = ({ cat }) => {
   };
 
   return (
-    <Layout style={styles.container}>
+    <Layout style={styles.container} testID={`cat-row-${index}`}>
       <Image
         style={styles.image}
         source={{

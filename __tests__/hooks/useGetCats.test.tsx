@@ -9,6 +9,8 @@ beforeEach(() => {
 });
 
 function generateMockedResponse(pageParam: number) {
+  if (pageParam > 6) return [];
+
   return {
     nextPage: pageParam + 1,
     data: [
@@ -47,4 +49,38 @@ test("should return all cats correctly", async () => {
   );
 
   expect(result.current.data?.pages[1].data).toEqual(generateMockedResponse(1));
+});
+
+test("should return undefined on last page", async () => {
+  fetch.mockResponse(JSON.stringify(generateMockedResponse(0)));
+
+  const { result } = renderHook(() => useGetCats(), {
+    wrapper: ReactQueryWrapper,
+  });
+
+  await waitFor(() => result.current.isSuccess);
+
+  fetch.mockResponse(JSON.stringify(generateMockedResponse(1)));
+  await act(() => result.current.fetchNextPage());
+
+  fetch.mockResponse(JSON.stringify(generateMockedResponse(2)));
+  await act(() => result.current.fetchNextPage());
+
+  fetch.mockResponse(JSON.stringify(generateMockedResponse(3)));
+  await act(() => result.current.fetchNextPage());
+
+  fetch.mockResponse(JSON.stringify(generateMockedResponse(4)));
+  await act(() => result.current.fetchNextPage());
+
+  fetch.mockResponse(JSON.stringify(generateMockedResponse(5)));
+  await act(() => result.current.fetchNextPage());
+
+  fetch.mockResponse(JSON.stringify(generateMockedResponse(6)));
+  await act(() => result.current.fetchNextPage());
+
+  // try to fetch next page after last page
+  fetch.mockResponse(JSON.stringify(generateMockedResponse(7)));
+  await act(() => result.current.fetchNextPage());
+
+  expect(result.current.data?.pages[7]).toBeUndefined();
 });

@@ -20,18 +20,15 @@ describe("<useGetFaves.test />", () => {
   });
 
   test("should have an array with one item", async () => {
-    AsyncStorage.setItem(
-      "fave",
-      JSON.stringify([
-        {
-          id: "cat1",
-          name: "cat1",
-          image: {
-            url: "https://example.com/cat1.jpg",
-          },
-        },
-      ])
-    );
+    const expectedCat = {
+      id: "cat1",
+      name: "cat1",
+      image: {
+        url: "https://example.com/cat1.jpg",
+      },
+    };
+
+    AsyncStorage.setItem("fave", JSON.stringify([expectedCat]));
 
     const { result } = renderHook(() => useGetFaves(), {
       wrapper: ReactQueryWrapper,
@@ -39,14 +36,6 @@ describe("<useGetFaves.test />", () => {
 
     await waitFor(() => result.current.isSuccess);
 
-    expect(result.current.data).toStrictEqual([
-      {
-        id: "cat1",
-        name: "cat1",
-        image: {
-          url: "https://example.com/cat1.jpg",
-        },
-      },
-    ]);
+    expect(result.current.data).toStrictEqual([expectedCat]);
   });
 });
