@@ -3,6 +3,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import CatCardItem from "../components/cards/CatCardItem";
 import useGetCats from "../hooks/useGetCats";
+import useToggleFave from "../hooks/useToggleFave";
 
 const CatList = () => {
   const {
@@ -13,8 +14,21 @@ const CatList = () => {
     isFetched,
     hasNextPage,
   } = useGetCats();
+  const toggleFaveMutation = useToggleFave();
 
-  const loadMore = () => fetchNextPage();
+  const loadMore = () => {
+    fetchNextPage();
+  };
+
+  const toggleFave = (item) => {
+    // const prevIsFave = isFave;
+    // setIsFave(!prevIsFave);
+    toggleFaveMutation.mutate(item, {
+      onError: (error) => {
+        // setIsFave(prevIsFave);
+      },
+    });
+  };
 
   if (isLoading) {
     return (
@@ -43,11 +57,16 @@ const CatList = () => {
     );
 
   const renderItem = ({ item, index }) => (
-    <CatCardItem index={index} item={item} />
+    <CatCardItem
+      toggleFave={() => toggleFave(item)}
+      index={index}
+      item={item}
+    />
   );
 
   return (
     <List
+      testID="cat-list"
       keyExtractor={(item) => item?.id}
       data={data?.pages.map((page) => page.data).flat()}
       renderItem={renderItem}

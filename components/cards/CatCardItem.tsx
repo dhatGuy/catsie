@@ -2,10 +2,8 @@ import { Icon, Layout, Text } from "@ui-kitten/components";
 import React, { memo } from "react";
 import { Image, Pressable, StyleSheet } from "react-native";
 import useGetFaves from "../../hooks/useGetFaves";
-import useToggleFave from "../../hooks/useToggleFave";
 
-function CatCardItem({ item, index }) {
-  const toggleFaveMutation = useToggleFave();
+function CatCardItem({ item, index, toggleFave }) {
   const { data } = useGetFaves();
   const [isFave, setIsFave] = React.useState(false);
 
@@ -13,16 +11,6 @@ function CatCardItem({ item, index }) {
     const isFave = data?.some((cat) => cat.id === item.id);
     setIsFave(isFave);
   }, [data, item.id]);
-
-  const toggleFave = () => {
-    const prevIsFave = isFave;
-    setIsFave(!prevIsFave);
-    toggleFaveMutation.mutate(item, {
-      onError: (error) => {
-        setIsFave(prevIsFave);
-      },
-    });
-  };
 
   return (
     <Layout style={styles.container} testID={`cat-row-${index}`}>

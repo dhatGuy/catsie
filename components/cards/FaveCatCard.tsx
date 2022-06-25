@@ -1,15 +1,8 @@
 import { Icon, Layout, Text } from "@ui-kitten/components";
-import React from "react";
+import React, { memo } from "react";
 import { Image, Pressable, StyleSheet } from "react-native";
-import useToggleFave from "../../hooks/useToggleFave";
 
-const FaveCatCard = ({ cat, index }) => {
-  const toggleFaveMutation = useToggleFave();
-
-  const toggleFave = () => {
-    toggleFaveMutation.mutate(cat, {});
-  };
-
+const FaveCatCard = ({ cat, index, removeFromFavourites }) => {
   return (
     <Layout style={styles.container} testID={`cat-row-${index}`}>
       <Image
@@ -29,7 +22,7 @@ const FaveCatCard = ({ cat, index }) => {
         <Text category={"s1"}>{cat.name}</Text>
 
         <Pressable
-          onPress={toggleFave}
+          onPress={removeFromFavourites}
           accessibilityLabel="remove from favourites"
         >
           <Icon width={20} height={20} fill="#DE0202" name="heart" />
@@ -39,7 +32,7 @@ const FaveCatCard = ({ cat, index }) => {
   );
 };
 
-export default FaveCatCard;
+export default memo(FaveCatCard);
 
 const styles = StyleSheet.create({
   container: {
