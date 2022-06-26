@@ -30,6 +30,10 @@ describe("useToggleFave", () => {
     });
     await waitFor(() => result.current.isSuccess);
 
+    expect(AsyncStorage.setItem).toHaveBeenCalledWith(
+      "fave",
+      JSON.stringify([cat])
+    );
     expect(await AsyncStorage.getItem("fave")).toStrictEqual(
       JSON.stringify([cat])
     );

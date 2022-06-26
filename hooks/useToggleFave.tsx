@@ -30,31 +30,7 @@ const useToggleFave = () => {
   };
 
   return useMutation((item) => toggleFave(item), {
-    onMutate: async (item: any) => {
-      await queryClient.cancelQueries("faves");
-
-      // Snapshot the previous value
-      const previousFaves = queryClient.getQueryData("faves");
-
-      const isFave = previousFaves.some((fave) => fave.id == item.id);
-
-      // Optimistically update to the new value
-      queryClient.setQueryData("faves", (old: any) => {
-        if (isFave) {
-          return old.filter((fave) => fave.id != item.id);
-        } else {
-          return [...old, item];
-        }
-      });
-
-      // Return a context object with the snapshot value
-      return { previousFaves };
-    },
-    onError: (err, _, context) => {
-      queryClient.setQueryData("faves", context?.previousFaves);
-    },
-    // Always refetch after error or success:
-    onSettled: () => {
+    onSuccess: (item) => {
       queryClient.invalidateQueries("faves");
     },
   });
