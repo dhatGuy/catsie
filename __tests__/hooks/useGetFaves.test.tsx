@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage/jest/async-storage-mock";
 import { renderHook } from "@testing-library/react-hooks";
 import { waitFor } from "@testing-library/react-native";
 import useGetFaves from "../../hooks/useGetFaves";

@@ -13,6 +13,7 @@ const CatList = () => {
     isFetchingNextPage,
     isFetched,
     hasNextPage,
+    isError,
   } = useGetCats();
   const toggleFaveMutation = useToggleFave();
 
@@ -20,27 +21,20 @@ const CatList = () => {
     fetchNextPage();
   };
 
-  const toggleFave = (item) => {
-    // const prevIsFave = isFave;
-    // setIsFave(!prevIsFave);
-    toggleFaveMutation.mutate(item, {
-      onError: (error) => {
-        // setIsFave(prevIsFave);
-      },
-    });
-  };
+  const toggleFave = (item) => toggleFaveMutation.mutate(item);
 
   if (isLoading) {
     return (
-      <Layout
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-        accessibilityLabel="loading-spinner"
-      >
+      <Layout style={styles.flex} accessibilityLabel="loading-spinner">
         <Spinner size={"giant"} />
+      </Layout>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Layout style={styles.flex} accessibilityLabel="error-message">
+        <Text category={"s1"}>Error fetching cats</Text>
       </Layout>
     );
   }
@@ -93,6 +87,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 5,
+  },
+  flex: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

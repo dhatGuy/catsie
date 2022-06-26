@@ -5,17 +5,18 @@ import FaveCatCard from "../../components/cards/FaveCatCard";
 import TestWrapper, { UiKittenTestWrapper } from "../../utils/TestWrapper";
 
 describe("Fave Cat Card Component", () => {
+  const cat = {
+    id: 1,
+    name: "ginger cat",
+    image: {
+      url: "https://placekitten.com/200/200",
+    },
+  };
   it("should render a cat card", () => {
-    const cat = {
-      id: 1,
-      name: "cat",
-      image: {
-        url: "https://placekitten.com/200/200",
-      },
-    };
+    const removeFave = jest.fn();
     const { getByText } = render(
       <TestWrapper>
-        <FaveCatCard index={0} cat={cat} />
+        <FaveCatCard removeFromFavourites={removeFave} index={0} cat={cat} />
       </TestWrapper>
     );
 
@@ -23,29 +24,25 @@ describe("Fave Cat Card Component", () => {
   });
 
   it("should call the toggle function", async () => {
-    const cat = {
-      id: 1,
-      name: "ginger cat",
-      image: {
-        url: "https://placekitten.com/200/200",
-      },
-    };
+    const removeFave = jest.fn(async () => {
+      await AsyncStorage.setItem("fave", JSON.stringify([]));
+    });
 
     const { getByLabelText } = render(
       <UiKittenTestWrapper>
-        <FaveCatCard index={0} cat={cat} />
+        <FaveCatCard removeFromFavourites={removeFave} index={0} cat={cat} />
       </UiKittenTestWrapper>
     );
 
     fireEvent.press(getByLabelText(/remove/i));
 
-    await waitFor(() => expect(AsyncStorage.getItem).toHaveBeenCalled());
-
-    expect(AsyncStorage.getItem).toHaveBeenCalledWith("fave");
+    await waitFor(() => {
+      expect(removeFave).toHaveBeenCalled();
+    });
 
     expect(AsyncStorage.setItem).toHaveBeenCalledWith(
       "fave",
-      JSON.stringify([cat])
+      JSON.stringify([])
     );
   });
 });

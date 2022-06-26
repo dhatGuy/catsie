@@ -11,6 +11,6 @@ describe("<EmptyFave />", () => {
   );
 
   it("should render correctly when fave is empty", () => {
-    expect(getByText("No favourites 😿")).toBeDefined();
+    expect(getByText("No favourites 😿"));
   });
 });

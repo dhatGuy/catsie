@@ -1,4 +1,5 @@
-import { fireEvent, render } from "@testing-library/react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage/jest/async-storage-mock";
+import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import React from "react";
 import CatCardItem from "../../components/cards/CatCardItem";
 import TestWrapper from "../../utils/TestWrapper";
@@ -12,12 +13,15 @@ describe("Cat Card Component", () => {
         url: "https://placekitten.com/200/200",
       },
     };
+
+    const toggleFave = jest.fn();
+
     const { getByText } = render(
       <TestWrapper>
-        <CatCardItem item={item} index={0} />
+        <CatCardItem toggleFave={toggleFave} item={item} index={0} />
       </TestWrapper>
     );
-    expect(getByText(item.name)).toBeDefined();
+    expect(getByText(item.name));
   });
 
   it("should render a cat card with a placeholder image if image is undefined", () => {
@@ -26,16 +30,19 @@ describe("Cat Card Component", () => {
       name: "cat",
       image: {},
     };
+
+    const toggleFave = jest.fn();
+
     const { getByText, getByLabelText } = render(
       <TestWrapper>
-        <CatCardItem index={0} item={item} />
+        <CatCardItem toggleFave={toggleFave} index={0} item={item} />
       </TestWrapper>
     );
-    expect(getByText(item.name)).toBeDefined();
-    expect(getByLabelText(/image/i)).not.toBeNull();
+    expect(getByText(item.name));
+    expect(getByLabelText(/image/i));
   });
 
-  it("should toggle the favourite status", () => {
+  it("should toggle the favourite status", async () => {
     const item = {
       id: 1,
       name: "cat",
@@ -43,16 +50,30 @@ describe("Cat Card Component", () => {
         url: "https://placekitten.com/200/200",
       },
     };
-    const { getByLabelText } = render(
+
+    await waitFor(() => {
+      AsyncStorage.setItem("fave", JSON.stringify([item]));
+    });
+
+    const toggleFave = jest.fn(async () => {
+      await AsyncStorage.setItem("fave", JSON.stringify([]));
+    });
+
+    const { getByLabelText, debug } = render(
       <TestWrapper>
-        <CatCardItem index={0} item={item} />
+        <CatCardItem toggleFave={toggleFave} index={0} item={item} />
       </TestWrapper>
     );
 
-    expect(getByLabelText(/add/i)).toBeDefined();
+    expect(getByLabelText(/add/i));
 
-    fireEvent.press(getByLabelText(/add/i));
+    await waitFor(() => fireEvent.press(getByLabelText(/add/i)));
 
-    expect(getByLabelText(/remove/i)).toBeDefined();
+    expect(AsyncStorage.setItem).toHaveBeenCalledWith(
+      "fave",
+      JSON.stringify([])
+    );
+    expect(toggleFave).toHaveBeenCalled();
+    expect(getByLabelText(/remove/i));
   });
 });

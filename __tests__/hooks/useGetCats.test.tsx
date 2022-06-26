@@ -1,11 +1,10 @@
 import { renderHook } from "@testing-library/react-hooks";
 import { act, waitFor } from "@testing-library/react-native";
-import fetch from "jest-fetch-mock";
 import useGetCats from "../../hooks/useGetCats";
 import ReactQueryWrapper from "../../utils/TestWrapper";
 
 beforeEach(() => {
-  fetch.resetMocks();
+  fetchMock.resetMocks();
 });
 
 function generateMockedResponse(pageParam: number) {
@@ -26,13 +25,13 @@ function generateMockedResponse(pageParam: number) {
 }
 
 test("should return all cats correctly", async () => {
-  fetch.mockResponse(JSON.stringify(generateMockedResponse(0)));
+  fetchMock.mockResponse(JSON.stringify(generateMockedResponse(0)));
 
   const { result } = renderHook(() => useGetCats(), {
     wrapper: ReactQueryWrapper,
   });
 
-  expect(fetch.mock.calls[0][0]).toBe(
+  expect(fetchMock.mock.calls[0][0]).toBe(
     "https://api.thecatapi.com/v1/breeds?limit=10&page=0"
   );
   await waitFor(() => result.current.isSuccess);
@@ -41,10 +40,10 @@ test("should return all cats correctly", async () => {
     generateMockedResponse(0)
   );
 
-  fetch.mockResponse(JSON.stringify(generateMockedResponse(1)));
+  fetchMock.mockResponse(JSON.stringify(generateMockedResponse(1)));
   await act(() => result.current.fetchNextPage());
 
-  expect(fetch.mock.calls[1][0]).toBe(
+  expect(fetchMock.mock.calls[1][0]).toBe(
     "https://api.thecatapi.com/v1/breeds?limit=10&page=1"
   );
 
@@ -52,7 +51,7 @@ test("should return all cats correctly", async () => {
 });
 
 test("should return undefined on last page", async () => {
-  fetch.mockResponse(JSON.stringify(generateMockedResponse(0)));
+  fetchMock.mockResponse(JSON.stringify(generateMockedResponse(0)));
 
   const { result } = renderHook(() => useGetCats(), {
     wrapper: ReactQueryWrapper,
@@ -60,26 +59,26 @@ test("should return undefined on last page", async () => {
 
   await waitFor(() => result.current.isSuccess);
 
-  fetch.mockResponse(JSON.stringify(generateMockedResponse(1)));
+  fetchMock.mockResponse(JSON.stringify(generateMockedResponse(1)));
   await act(() => result.current.fetchNextPage());
 
-  fetch.mockResponse(JSON.stringify(generateMockedResponse(2)));
+  fetchMock.mockResponse(JSON.stringify(generateMockedResponse(2)));
   await act(() => result.current.fetchNextPage());
 
-  fetch.mockResponse(JSON.stringify(generateMockedResponse(3)));
+  fetchMock.mockResponse(JSON.stringify(generateMockedResponse(3)));
   await act(() => result.current.fetchNextPage());
 
-  fetch.mockResponse(JSON.stringify(generateMockedResponse(4)));
+  fetchMock.mockResponse(JSON.stringify(generateMockedResponse(4)));
   await act(() => result.current.fetchNextPage());
 
-  fetch.mockResponse(JSON.stringify(generateMockedResponse(5)));
+  fetchMock.mockResponse(JSON.stringify(generateMockedResponse(5)));
   await act(() => result.current.fetchNextPage());
 
-  fetch.mockResponse(JSON.stringify(generateMockedResponse(6)));
+  fetchMock.mockResponse(JSON.stringify(generateMockedResponse(6)));
   await act(() => result.current.fetchNextPage());
 
-  // try to fetch next page after last page
-  fetch.mockResponse(JSON.stringify(generateMockedResponse(7)));
+  // try to fetchMock next page after last page
+  fetchMock.mockResponse(JSON.stringify(generateMockedResponse(7)));
   await act(() => result.current.fetchNextPage());
 
   expect(result.current.data?.pages[7]).toBeUndefined();

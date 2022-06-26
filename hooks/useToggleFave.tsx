@@ -54,7 +54,9 @@ const useToggleFave = () => {
       queryClient.setQueryData("faves", context?.previousFaves);
     },
     // Always refetch after error or success:
-    onSettled: () => queryClient.invalidateQueries("faves"),
+    onSettled: () => {
+      queryClient.invalidateQueries("faves");
+    },
   });
 };
 
