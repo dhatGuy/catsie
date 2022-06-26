@@ -4,7 +4,7 @@ A pet directory app built with React Native(Expo).
 
 ## Demo
 
-![catsie-min](https://user-images.githubusercontent.com/51405947/175817686-a185a9d4-efc5-4251-9b90-a39eb3ade71f.gif)
+![catsie-min](https://user-images.githubusercontent.com/51405947/175818509-a16fd7b3-b9d2-436d-a89d-2fc138411ad4.gif)
 
 ## Run Locally
 
